@@ -20,7 +20,7 @@ class ComponentsOverview extends React.Component {
         <Row noGutters className="page-header py-4">
       <PageTitle title="Shoppers Concentration Heat Maps" subtitle="Shoppers Heat Maps" className="text-sm-left mb-3" />
     </Row>
-        <img src={require("../images/roi.jpg")} alt="ROI Locations" />
+        <img src="http://192.168.0.104:5000/camera01_hm_img" width="500" alt="ROI Locations" />
         </Container>
       );
   }
