@@ -1,157 +1,34 @@
 import React from "react";
 import { Container, Row, Col, Card, CardHeader, CardBody } from "shards-react";
+// import ScriptTag from 'react-script-tag';
+import * as d3 from "d3";
 
-import PageTitle from "../components/common/PageTitle";
 
-const Tables = () => (
-  <Container fluid className="main-content-container px-4">
-    {/* Page Header */}
-    <Row noGutters className="page-header py-4">
-      <PageTitle sm="4" title="Add New Post" subtitle="Blog Posts" className="text-sm-left" />
-    </Row>
+class Tables extends React.Component {
+    render(){
+        return(
+            <div>
+            {/* // <div id="title">The American way of life</div>
+            // <div id="left-panel">
+            //     <div id="time-label">Time:</div>
+            //     <div id="time">
+            //     </div>
+            //     <div id="data">
+            //         This is a visualization of a typical day of 1000 Americans collected from the American Time Use Survey data from 2017. Try to observe the patterns that people move in. Each dot represents a person.
+            //     </div>
+            // </div>
+            // <div id="Visualization"></div>
 
-    {/* Default Light Table */}
-    <Row>
-      <Col>
-        <Card small className="mb-4">
-          <CardHeader className="border-bottom">
-            <h6 className="m-0">Active Users</h6>
-          </CardHeader>
-          <CardBody className="p-0 pb-3">
-            <table className="table mb-0">
-              <thead className="bg-light">
-                <tr>
-                  <th scope="col" className="border-0">
-                    #
-                  </th>
-                  <th scope="col" className="border-0">
-                    First Name
-                  </th>
-                  <th scope="col" className="border-0">
-                    Last Name
-                  </th>
-                  <th scope="col" className="border-0">
-                    Country
-                  </th>
-                  <th scope="col" className="border-0">
-                    City
-                  </th>
-                  <th scope="col" className="border-0">
-                    Phone
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>1</td>
-                  <td>Ali</td>
-                  <td>Kerry</td>
-                  <td>Russian Federation</td>
-                  <td>Gdańsk</td>
-                  <td>107-0339</td>
-                </tr>
-                <tr>
-                  <td>2</td>
-                  <td>Clark</td>
-                  <td>Angela</td>
-                  <td>Estonia</td>
-                  <td>Borghetto di Vara</td>
-                  <td>1-660-850-1647</td>
-                </tr>
-                <tr>
-                  <td>3</td>
-                  <td>Jerry</td>
-                  <td>Nathan</td>
-                  <td>Cyprus</td>
-                  <td>Braunau am Inn</td>
-                  <td>214-4225</td>
-                </tr>
-                <tr>
-                  <td>4</td>
-                  <td>Colt</td>
-                  <td>Angela</td>
-                  <td>Liberia</td>
-                  <td>Bad Hersfeld</td>
-                  <td>1-848-473-7416</td>
-                </tr>
-              </tbody>
-            </table>
-          </CardBody>
-        </Card>
-      </Col>
-    </Row>
-
-    {/* Default Dark Table */}
-    <Row>
-      <Col>
-        <Card small className="mb-4 overflow-hidden">
-          <CardHeader className="bg-dark">
-            <h6 className="m-0 text-white">Active Users</h6>
-          </CardHeader>
-          <CardBody className="bg-dark p-0 pb-3">
-            <table className="table table-dark mb-0">
-              <thead className="thead-dark">
-                <tr>
-                  <th scope="col" className="border-0">
-                    #
-                  </th>
-                  <th scope="col" className="border-0">
-                    First Name
-                  </th>
-                  <th scope="col" className="border-0">
-                    Last Name
-                  </th>
-                  <th scope="col" className="border-0">
-                    Country
-                  </th>
-                  <th scope="col" className="border-0">
-                    City
-                  </th>
-                  <th scope="col" className="border-0">
-                    Phone
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>1</td>
-                  <td>Ali</td>
-                  <td>Kerry</td>
-                  <td>Russian Federation</td>
-                  <td>Gdańsk</td>
-                  <td>107-0339</td>
-                </tr>
-                <tr>
-                  <td>2</td>
-                  <td>Clark</td>
-                  <td>Angela</td>
-                  <td>Estonia</td>
-                  <td>Borghetto di Vara</td>
-                  <td>1-660-850-1647</td>
-                </tr>
-                <tr>
-                  <td>3</td>
-                  <td>Jerry</td>
-                  <td>Nathan</td>
-                  <td>Cyprus</td>
-                  <td>Braunau am Inn</td>
-                  <td>214-4225</td>
-                </tr>
-                <tr>
-                  <td>4</td>
-                  <td>Colt</td>
-                  <td>Angela</td>
-                  <td>Liberia</td>
-                  <td>Bad Hersfeld</td>
-                  <td>1-848-473-7416</td>
-                </tr>
-              </tbody>
-            </table>
-          </CardBody>
-        </Card>
-      </Col>
-    </Row>
-  </Container>
-);
+            // <script src="https://d3js.org/d3.v5.min.js"></script>
+            // <script type="text/javascript" src="http://localhost/html/main/usa_data.js"></script>
+            //  */}
+            <p>owais</p>
+            <form action="http://localhost/html/" target="_blank">
+    <input type="submit" value="Go to Google" />
+</form>
+            </div>
+        )
+    }
+} 
 
 export default Tables;
