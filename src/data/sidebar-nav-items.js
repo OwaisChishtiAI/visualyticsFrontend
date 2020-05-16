@@ -22,15 +22,15 @@ export default function() {
       to: "/components-overview",
     },
     {
-      title: "Tables",
+      title: "Customer Journey",
       htmlBefore: '<i class="material-icons">table_chart</i>',
       to: "/tables",
     },
-    // {
-    //   title: "User Profile",
-    //   htmlBefore: '<i class="material-icons">person</i>',
-    //   to: "/user-profile-lite",
-    // },
+    {
+      title: "Users Profile",
+      htmlBefore: '<i class="material-icons">person</i>',
+      to: "/user-profile-lite",
+    },
     // {
     //   title: "Errors",
     //   htmlBefore: '<i class="material-icons">error</i>',
