@@ -83,7 +83,7 @@ class BlogPosts extends React.Component {
       }
     };
 
-    axios.get('http://192.168.0.100:5000/camera01_roi')
+    axios.get('http://localhost:5000/camera01_roi')
           .then(response => {
               if (response.status === 200 && response != null) {
                     // console.log(response.data.group);

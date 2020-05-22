@@ -34,7 +34,7 @@ class Tables extends React.Component {
     plotGraph = (q) => {
         // window.location.reload(false);
         console.log(q);
-        axios.get('http://192.168.8.105:5000/camera01_markov?parent=' + q)
+        axios.get('http://localhost:5000/camera01_markov?parent=' + q)
           .then(response => {
               if (response.status === 200 && response != null) {
                 //   console.log(response.data.data);
@@ -73,7 +73,7 @@ class Tables extends React.Component {
             <PageTitle title="Customer Transitions b/w ROIs" subtitle="Customer Journey" className="text-sm-left mb-3" />
             </Row>
             
-            <Form action="http://192.168.8.105:5000/bubblechart" target="_blank">
+            <Form action="http://localhost:5000/bubblechart" target="_blank">
             {/* <input type="submit" value="Track Last Hour Movements" /> */}
             <Button>Track Last Hour Movements</Button>
             </Form>

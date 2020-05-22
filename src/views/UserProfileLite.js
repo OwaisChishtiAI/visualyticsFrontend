@@ -13,14 +13,46 @@ import {
   CardFooter
 } from "shards-react";
 import PageTitle from "./../components/common/PageTitle";
+import {emojify} from 'react-emojione';
+import SmallStats from "../components/common/SmallStats";
+
+import "./cards.css"
+
+import RangeDatePicker from "../components/common/RangeDatePicker";
 
 var CanvasJSReact = require('./canvasjs/canvasjs.react');
 var CanvasJS = CanvasJSReact.CanvasJS;
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
+const options = {
+  // convertShortnames: true,
+  // convertUnicode: true,
+  // convertAscii: true,
+  style: {
+      // backgroundImage: 'url("/path/to/your/emojione.sprites.png")',
+      height: 150,
+      margin: 2,
+  },
+  // this click handler will be set on every emoji
+  // onClick: event => alert(event.target.title)
+};
+
+const datasets= [
+  {
+    label: "Today",
+    fill: "start",
+    borderWidth: 1.5,
+    backgroundColor: "rgba(0, 184, 216, 0.1)",
+    borderColor: "rgb(0, 184, 216)",
+    data: [1, 2, 1, 3, 5, 4, 7]
+  }
+]
+const attrs= { md: "6", sm: "6" };
+
 class UserProfileLite extends React.Component{
   constructor(props) {
     super(props);
+    this.canvasRefLine = React.createRef();
     this.state={
       title: "Users Statistics",
       GenderData: { 
@@ -76,16 +108,22 @@ class UserProfileLite extends React.Component{
         ],
         labels: ["Neutral", "Happy", "Sad", "Angry"]
       },
+      //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      LinechartData: {
+        // labels: ["05-17-2020 20:24", "05-17-2020 20:25", "05-17-2020 20:26"],
+        labels : [],
+        datasets: []
+      }
     }
 
     this.canvasRef = React.createRef();
     this.canvasRef2 = React.createRef();
-    this.canvasRef3 = React.createRef();
+    // this.canvasRef3 = React.createRef();
   }
 
   componentDidMount() {
     // http://192.168.8.105:5000/counter
-    axios.get('http://192.168.8.105:5000/counter')
+    axios.get('http://localhost:5000/counter')
           .then(response => {
               if (response.status === 200 && response != null) {
                 let GenderData_local= { 
@@ -106,12 +144,14 @@ class UserProfileLite extends React.Component{
                 for(var i = 0; i < response.data.gender.length; i++){
                   GenderData_local.datasets[0].data.push(response.data.gender[i][data_labels[i]]);
                 }
+                GenderData_local.datasets[0].data.pop();
+                GenderData_local.datasets[0].data.push(3);
                 // GenderData_local.datasets[0].data.push(0);
                 this.setState({
                   GenderData : GenderData_local
                 });
                 const chartConfig = {
-                  type: "bar",
+                  type: "pie",
                   data: this.state.GenderData,
                 };
               
@@ -122,7 +162,7 @@ class UserProfileLite extends React.Component{
                 datasets: [
                   {
                     hoverBorderColor: "#ffffff",
-                    label : "Gender Count",
+                    label : "Age Groups Count",
                     // order: 4,
                     data: [],
                     backgroundColor: [
@@ -181,13 +221,80 @@ class UserProfileLite extends React.Component{
                 type: "bar",
                 data: this.state.EmotionsData,
               };
-              new Chart(this.canvasRef3.current, chartConfig3);
+              // new Chart(this.canvasRef3.current, chartConfig3);
               }
               else{
                 console.log("Problem");
               }
             }
           );
+          // console.log(this.state.EmotionsData.datasets[0].data);
+          ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+          let array_local = {
+            label: "Current Month",
+            fill: "start",
+            data: [],
+            backgroundColor: "rgba(0,123,255,0.1)",
+            borderColor: "rgba(0,123,255,1)",
+            pointBackgroundColor: "#ffffff",
+            pointHoverBackgroundColor: "rgb(0,123,255)",
+            borderWidth: 1.5,
+            pointRadius: 0,
+            pointHoverRadius: 3
+          };
+
+          let LinechartData_local = {
+            labels : [],
+          datasets: []
+          }
+          // for(var j = 0; j < response.data.aggregate.emotionByTime; j++){
+
+          // }
+
+
+          const chartOptionsLine = {
+            ...{
+              responsive: true,
+              legend: {
+                position: "top"
+              },
+              elements: {
+                line: {
+                  // A higher value makes the line look skewed at this ratio.
+                  tension: 0.3
+                },
+                point: {
+                  radius: 0
+                }
+              },
+              hover: {
+                mode: "nearest",
+                intersect: false
+              },
+              tooltips: {
+                custom: false,
+                mode: "nearest",
+                intersect: false
+              }
+            },
+            ...this.props.chartOptionsLine
+          };
+      
+          // const BlogUsersOverview = new Chart(this.canvasRefLine.current, {
+          //   type: "LineWithLine",
+          //   data: this.state.LinechartData, 
+          //   options: chartOptionsLine
+          // });
+      
+          // // They can still be triggered on hover.
+          // const buoMeta = BlogUsersOverview.getDatasetMeta(0);
+          // buoMeta.data[0]._model.radius = 0;
+          // buoMeta.data[
+          //   this.state.LinechartData.datasets[0].data.length - 1
+          // ]._model.radius = 0;
+      
+          // // Render the chart.
+          // BlogUsersOverview.render();
   }
 render() {
   const { title } = this.state;
@@ -196,12 +303,47 @@ render() {
         <Row noGutters className="page-header py-4">
         <PageTitle title="Understand Customers Better" subtitle="Users Profile" className="text-sm-left mb-3" />
         </Row>
+        
+        <Row>
+        <Col md="6" sm="6" lg="3">
+        <div className="stats-card purple-card mb-4">
+        <h6>Angry Customers</h6>
+        {emojify('😠', options)}
+        {/* <span></span> */}
+        {/* <span style={{float:"right"}}>/ Hr</span> */}
+        <span style={{color:"blue", fontSize:"xx-large", float:"right"}}>{this.state.EmotionsData.datasets[0].data[0]}</span>
+          </div>
+          </Col>
+        <Col md="6" sm="6" lg="3">
+        <div className="stats-card purple-card mb-4">
+        <h6>Happy Customers</h6>
+        {emojify(':)', options)}
+        <span style={{color:"blue", fontSize:"xx-large", float:"right"}}>{this.state.EmotionsData.datasets[0].data[1]}</span>
+          </div>
+          </Col>
+          <Col md="6" sm="6" lg="3">
+        <div className="stats-card purple-card mb-4">
+        <h6>Sad Customers</h6>
+        {emojify(':(', options)}
+        <span style={{color:"blue", fontSize:"xx-large", float:"right"}}>{this.state.EmotionsData.datasets[0].data[2]}</span>
+          </div>
+          </Col>
+          <Col md="6" sm="6" lg="3">
+        <div className="stats-card purple-card mb-4">
+        <h6>Neutral Customers</h6>
+        {emojify('😐', options)}
+        <span style={{color:"blue", fontSize:"xx-large", float:"right"}}>{this.state.EmotionsData.datasets[0].data[3]}</span>
+          </div>
+          </Col>
+          </Row>
+
+
       <Card small className="h-100">
         <CardHeader className="border-bottom">
           <h6 className="m-0">{title}</h6>
         </CardHeader>
         <Row>
-        <Col lg="4" md="6" sm="6" className="mb-4">
+        <Col lg="6" md="6" sm="6" className="mb-4">
         <CardBody className="d-flex py-0">
           <canvas
             height="220"
@@ -210,7 +352,7 @@ render() {
           />
         </CardBody>
         </Col>
-        <Col lg="4" md="6" sm="6" className="mb-4">
+        <Col lg="6" md="6" sm="6" className="mb-4">
         <CardBody className="d-flex py-0">
           <canvas
             height="220"
@@ -219,7 +361,7 @@ render() {
           />
         </CardBody>
         </Col>
-        <Col lg="4" md="6" sm="6" className="mb-4">
+        {/* <Col lg="4" md="6" sm="6" className="mb-4">
         <CardBody className="d-flex py-0">
           <canvas
             height="220"
@@ -227,12 +369,48 @@ render() {
             className="blog-users-by-device m-auto"
           />
         </CardBody>
-        </Col>
+        </Col> */}
         </Row>
       </Card>
+
+
+      <br></br>
+      <CardHeader className="border-bottom">
+          <h6 className="m-0">Time-wise Emotions</h6>
+        </CardHeader>
+      <Row className="border-bottom py-2 bg-light">
+      <Col sm="6" className="d-flex mb-2 mb-sm-0">
+              <RangeDatePicker />
+            </Col>
+          </Row>
+          <canvas
+            height="120"
+            ref={this.canvasRefLine}
+            style={{ maxWidth: "100% !important" }}
+          />
+
       </Container>
     );
  }
 }
+
+
+UserProfileLite.propTypes = {
+  /**
+   * The component's title.
+   */
+  title: PropTypes.string,
+  /**
+   * The chart dataset.
+   */
+  chartData: PropTypes.object,
+  /**
+   * The Chart.js options.
+   */
+  chartOptions: PropTypes.object
+};
+
+
+
 
 export default UserProfileLite;
