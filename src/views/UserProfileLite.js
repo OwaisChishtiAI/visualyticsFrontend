@@ -118,7 +118,7 @@ class UserProfileLite extends React.Component{
 
     this.canvasRef = React.createRef();
     this.canvasRef2 = React.createRef();
-    // this.canvasRef3 = React.createRef();
+    this.canvasRef3 = React.createRef();
   }
 
   componentDidMount() {
@@ -135,7 +135,8 @@ class UserProfileLite extends React.Component{
                       data: [],
                       backgroundColor: [
                         "rgba(0,123,255,0.9)",
-                        "rgba(0,123,255,0.5)"            ]
+                        "rgba(255,0,179,0.9)"
+                                    ]
                     }
                   ],
                   labels: ["Male", "Female"]
@@ -167,13 +168,13 @@ class UserProfileLite extends React.Component{
                     data: [],
                     backgroundColor: [
                       "rgba(0,123,255,0.9)",
-                      "rgba(0,123,255,0.8)",
-                      "rgba(0,123,255,0.7)",
-                      "rgba(0,123,255,0.6)",
-                      "rgba(0,123,255,0.5)",
-                      "rgba(0,123,255,0.4)",
-                      "rgba(0,123,255,0.3)",
-                      "rgba(0,123,255,0.2)",
+                      "rgba(0,123,255,0.9)",
+                      "rgba(0,123,255,0.9)",
+                      "rgba(0,123,255,0.9)",
+                      "rgba(0,123,255,0.9)",
+                      "rgba(0,123,255,0.9)",
+                      "rgba(0,123,255,0.9)",
+                      "rgba(0,123,255,0.9)",
                     ]
                   }
                 ],
@@ -184,10 +185,30 @@ class UserProfileLite extends React.Component{
               }
               this.setState({
                 AgeData : AgeData_local
-              })
+              });
+            //   let optionsThis = {
+            //     scales: {
+            //         xAxes: [{
+            //             gridLines: {
+            //                 offsetGridLines: false
+            //             }
+            //         }]
+            //     }
+            // };
               const chartConfig2 = {
                 type: "bar",
                 data: this.state.AgeData,
+                options: {
+                  scales: {
+                      yAxes: [{
+                          ticks: {
+                              // max: 5,
+                              // min: 0,
+                              stepSize: 1
+                          }
+                      }]
+                  }
+              }
               };
               new Chart(this.canvasRef2.current, chartConfig2);
 
@@ -226,31 +247,64 @@ class UserProfileLite extends React.Component{
               else{
                 console.log("Problem");
               }
-            }
-          );
-          // console.log(this.state.EmotionsData.datasets[0].data);
+            
+
+            // console.log(this.state.EmotionsData.datasets[0].data);
           ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-          let array_local = {
-            label: "Current Month",
-            fill: "start",
-            data: [],
-            backgroundColor: "rgba(0,123,255,0.1)",
-            borderColor: "rgba(0,123,255,1)",
-            pointBackgroundColor: "#ffffff",
-            pointHoverBackgroundColor: "rgb(0,123,255)",
-            borderWidth: 1.5,
-            pointRadius: 0,
-            pointHoverRadius: 3
-          };
+          // let array_local = {
+          //   label: "Current Month",
+          //   fill: "start",
+          //   data: [],
+          //   backgroundColor: "rgba(0,123,255,0.1)",
+          //   borderColor: "rgba(0,123,255,1)",
+          //   pointBackgroundColor: "#ffffff",
+          //   pointHoverBackgroundColor: "rgb(0,123,255)",
+          //   borderWidth: 1.5,
+          //   pointRadius: 0,
+          //   pointHoverRadius: 3
+          // };
 
           let LinechartData_local = {
             labels : [],
           datasets: []
           }
-          // for(var j = 0; j < response.data.aggregate.emotionByTime; j++){
+          let groups = "rgba(0,123,";
+          for(var j = 0; j < response.data.aggregate[1].groups.length; j++){
+            let array_local = {
+              label: "",
+              fill: "start",
+              data: [],
+              backgroundColor: "",
+              borderColor: "",
+              pointBackgroundColor: "#ffffff",
+              pointHoverBackgroundColor: "",
+              borderWidth: 1.5,
+              pointRadius: 1,
+              pointHoverRadius: 7
+            };
+            let color = (j+1)*100
+            array_local.backgroundColor = groups + color + ",0.1)";
+            array_local.borderColor = groups + color + ",1)";
+            array_local.pointBackgroundColor = groups + color + ")";
+            // groups.push(response.data.aggregate[1].groups[j])
+            for(var k = 0; k < response.data.aggregate[0].data[response.data.aggregate[1].groups[j]].length; k++){
+              // console.log(response.data.aggregate[0].data[response.data.aggregate[1].groups[j]][k]);
+              array_local.label = response.data.aggregate[1].groups[j];
+              array_local.data.push(response.data.aggregate[0].data[response.data.aggregate[1].groups[j]][k]);
+            }
+            LinechartData_local.datasets.push(array_local);
+            // array_local.data = [];
+          };
+          
+          for(var l = 0; l < response.data.aggregate[2].dates.length; l++){
+            LinechartData_local.labels.push(response.data.aggregate[2].dates[l])
+          }
+          // console.log("DATA Is HERE");
+          // console.log(LinechartData_local);
 
-          // }
-
+          this.setState({
+            LinechartData : LinechartData_local
+          });
 
           const chartOptionsLine = {
             ...{
@@ -280,21 +334,24 @@ class UserProfileLite extends React.Component{
             ...this.props.chartOptionsLine
           };
       
-          // const BlogUsersOverview = new Chart(this.canvasRefLine.current, {
-          //   type: "LineWithLine",
-          //   data: this.state.LinechartData, 
-          //   options: chartOptionsLine
-          // });
+          const BlogUsersOverview = new Chart(this.canvasRefLine.current, {
+            type: "LineWithLine",
+            data: this.state.LinechartData, 
+            options: chartOptionsLine
+          });
       
-          // // They can still be triggered on hover.
-          // const buoMeta = BlogUsersOverview.getDatasetMeta(0);
-          // buoMeta.data[0]._model.radius = 0;
-          // buoMeta.data[
-          //   this.state.LinechartData.datasets[0].data.length - 1
-          // ]._model.radius = 0;
+          // They can still be triggered on hover.
+          const buoMeta = BlogUsersOverview.getDatasetMeta(0);
+          buoMeta.data[0]._model.radius = 0;
+          buoMeta.data[
+            this.state.LinechartData.datasets[0].data.length - 1
+          ]._model.radius = 0;
       
-          // // Render the chart.
-          // BlogUsersOverview.render();
+          // Render the chart.
+          BlogUsersOverview.render();
+
+        });
+          
   }
 render() {
   const { title } = this.state;
@@ -361,7 +418,7 @@ render() {
           />
         </CardBody>
         </Col>
-        {/* <Col lg="4" md="6" sm="6" className="mb-4">
+        <Col lg="4" md="6" sm="6" className="mb-4">
         <CardBody className="d-flex py-0">
           <canvas
             height="220"
@@ -369,14 +426,14 @@ render() {
             className="blog-users-by-device m-auto"
           />
         </CardBody>
-        </Col> */}
+        </Col>
         </Row>
       </Card>
 
 
       <br></br>
       <CardHeader className="border-bottom">
-          <h6 className="m-0">Time-wise Emotions</h6>
+          <h6 className="m-0">Time-wise Age Groups</h6>
         </CardHeader>
       <Row className="border-bottom py-2 bg-light">
       <Col sm="6" className="d-flex mb-2 mb-sm-0">

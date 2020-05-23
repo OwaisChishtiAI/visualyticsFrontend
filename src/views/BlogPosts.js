@@ -22,6 +22,7 @@ class BlogPosts extends React.Component {
     this.state={
       title: "Shoppers Concetraction Camera 01",
       chartData: {
+        // label: "Customers ROI Concentration",
         datasets: [
           {
             hoverBorderColor: "#ffffff",
@@ -39,6 +40,7 @@ class BlogPosts extends React.Component {
         datasets: [
           {
             hoverBorderColor: "#ffffff",
+            label: "Customers ROI Concentration",
             data: [],
             backgroundColor: [
               "rgba(0,123,255,0.9)",
@@ -88,33 +90,36 @@ class BlogPosts extends React.Component {
               if (response.status === 200 && response != null) {
                     // console.log(response.data.group);
                     let chartData_local= {
+                      
                         datasets: [
+                          // 
                           {
                             hoverBorderColor: "#ffffff",
+                            label: "Customers ROI Concentration",
                             data: [],
                             backgroundColor: [
                               "rgba(0,123,255,0.9)",
-                              "rgba(0,123,255,0.5)",
-                              "rgba(0,123,255,0.3)",
-                              "rgba(0,123,255,0.2)",
-                              "rgba(0,123,255,0.1)",
-                              "rgba(0,100,255,0.9)",
-                              "rgba(0,100,255,0.5)",
-                              "rgba(0,100,255,0.3)",
-                              "rgba(0,100,255,0.2)",
-                              "rgba(0,100,255,0.1)",
-                              "rgba(0,150,255,0.9)",
-                              "rgba(0,150,255,0.5)",
-                              "rgba(0,150,255,0.3)",
-                              "rgba(0,150,255,0.2)",
-                              "rgba(0,150,255,0.1)",
-                              "rgba(0,200,255,0.9)",
-                              "rgba(0,200,255,0.5)",
-                              "rgba(0,200,255,0.3)",
-                              "rgba(0,200,255,0.2)",
-                              "rgba(0,200,255,0.1)",
-                              "rgba(0,220,255,0.9)",
-                              "rgba(0,220,255,0.5)"
+                              "rgba(0,123,255,0.9)",
+                              "rgba(0,123,255,0.9)",
+                              "rgba(0,123,255,0.9)",
+                              "rgba(0,123,255,0.9)",
+                              "rgba(0,123,255,0.9)",
+                              "rgba(0,123,255,0.9)",
+                              "rgba(0,123,255,0.9)",
+                              "rgba(0,123,255,0.9)",
+                              "rgba(0,123,255,0.9)",
+                              "rgba(0,123,255,0.9)",
+                              "rgba(0,123,255,0.9)",
+                              "rgba(0,123,255,0.9)",
+                              "rgba(0,123,255,0.9)",
+                              "rgba(0,123,255,0.9)",
+                              "rgba(0,123,255,0.9)",
+                              "rgba(0,123,255,0.9)",
+                              "rgba(0,123,255,0.9)",
+                              "rgba(0,123,255,0.9)",
+                              "rgba(0,123,255,0.9)",
+                              "rgba(0,123,255,0.9)",
+                              "rgba(0,123,255,0.9)"
 
                             ]
                           }
@@ -138,7 +143,7 @@ class BlogPosts extends React.Component {
                     });
                     
                     const chart1Config = {
-                      type: "pie",
+                      type: "bar",
                       data: this.state.chartData1,
                       options: {
                         ...{
@@ -185,7 +190,7 @@ class BlogPosts extends React.Component {
       <PageTitle title="Shoppers Concentration Charts" subtitle="Shopper Feeds" className="text-sm-left mb-3" />
     </Row>
       <Row>
-      <Col lg="10" md="6" sm="6" className="mb-4">
+      <Col lg="6" md="6" sm="6" className="mb-4">
         <Card small className="h-100">
         <CardHeader className="border-bottom">
           <h6 className="m-0">Shoppers Concetraction Camera 01</h6>
@@ -200,7 +205,7 @@ class BlogPosts extends React.Component {
         </Card>
         </Col>
 
-        <Col lg="10" md="6" sm="6" className="mb-4">
+        <Col lg="4" md="6" sm="6" className="mb-4">
         <Card small className="h-100">
         <CardHeader className="border-bottom">
           <h6 className="m-0">Shoppers Concetraction Camera 02</h6>
