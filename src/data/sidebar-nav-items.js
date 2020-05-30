@@ -31,10 +31,10 @@ export default function() {
       htmlBefore: '<i class="material-icons">person</i>',
       to: "/user-profile-lite",
     },
-    // {
-    //   title: "Errors",
-    //   htmlBefore: '<i class="material-icons">error</i>',
-    //   to: "/errors",
-    // }
+    {
+      title: "Face Authentication",
+      htmlBefore: '<i class="material-icons">error</i>',
+      to: "/face-auth",
+    }
   ];
 }

@@ -204,15 +204,7 @@ class UserProfileLite extends React.Component{
               this.setState({
                 AgeData : AgeData_local
               });
-            //   let optionsThis = {
-            //     scales: {
-            //         xAxes: [{
-            //             gridLines: {
-            //                 offsetGridLines: false
-            //             }
-            //         }]
-            //     }
-            // };
+           
               const chartConfig2 = {
                 type: "bar",
                 data: this.state.AgeData,
@@ -267,100 +259,7 @@ class UserProfileLite extends React.Component{
               }
             
 
-            // console.log(this.state.EmotionsData.datasets[0].data);
-          ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-          
-
-          // let LinechartData_local = {
-          //   labels : [],
-          // datasets: []
-          // }
-          // let groups = "rgba(0,123,";
-          // for(var j = 0; j < response.data.aggregate[1].groups.length; j++){
-          //   let array_local = {
-          //     label: "",
-          //     fill: "start",
-          //     data: [],
-          //     backgroundColor: "",
-          //     borderColor: "",
-          //     pointBackgroundColor: "#ffffff",
-          //     pointHoverBackgroundColor: "",
-          //     borderWidth: 1.5,
-          //     pointRadius: 1,
-          //     pointHoverRadius: 7
-          //   };
-          //   let color = (j+1)*100
-          //   array_local.backgroundColor = groups + color + ",0.1)";
-          //   array_local.borderColor = groups + color + ",1)";
-          //   array_local.pointBackgroundColor = groups + color + ")";
-          //   // groups.push(response.data.aggregate[1].groups[j])
-          //   for(var k = 0; k < response.data.aggregate[0].data[response.data.aggregate[1].groups[j]].length; k++){
-          //     // console.log(response.data.aggregate[0].data[response.data.aggregate[1].groups[j]][k]);
-          //     array_local.label = response.data.aggregate[1].groups[j];
-          //     array_local.data.push(response.data.aggregate[0].data[response.data.aggregate[1].groups[j]][k]);
-          //   }
-          //   LinechartData_local.datasets.push(array_local);
-          //   // array_local.data = [];
-          // };
-          
-          // for(var l = 0; l < response.data.aggregate[2].dates.length; l++){
-          //   LinechartData_local.labels.push(response.data.aggregate[2].dates[l])
-          // }
-          // // console.log("DATA Is HERE");
-          // // console.log(LinechartData_local);
-
-          // this.setState({
-          //   LinechartData : LinechartData_local
-          // });
-
-          // const chartOptionsLine = {
-          //   ...{
-          //     responsive: true,
-          //     legend: {
-          //       position: "top"
-          //     },
-          //     elements: {
-          //       line: {
-          //         // A higher value makes the line look skewed at this ratio.
-          //         tension: 0.3
-          //       },
-          //       point: {
-          //         radius: 0
-          //       }
-          //     },
-          //     hover: {
-          //       mode: "nearest",
-          //       intersect: false
-          //     },
-          //     tooltips: {
-          //       custom: false,
-          //       mode: "nearest",
-          //       intersect: false
-          //     }
-          //   },
-          //   ...this.props.chartOptionsLine
-          // };
-      
-          // const BlogUsersOverview = new Chart(this.canvasRefLine.current, {
-          //   type: "LineWithLine",
-          //   data: this.state.LinechartData, 
-          //   options: chartOptionsLine
-          // });
-      
-          // // They can still be triggered on hover.
-          // const buoMeta = BlogUsersOverview.getDatasetMeta(0);
-          // buoMeta.data[0]._model.radius = 0;
-          // buoMeta.data[
-          //   this.state.LinechartData.datasets[0].data.length - 1
-          // ]._model.radius = 0;
-      
-          // // Render the chart.
-          // BlogUsersOverview.render();
-
-          // label: "Red",
-          //   backgroundColor: "red",
-          //   data: [4,3,5]
-          //   },
+         
           let LinechartData_local= {
             labels : [],
             datasets: [],
