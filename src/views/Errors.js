@@ -43,7 +43,7 @@ class FaceAuth extends React.Component {
     console.log(imageSrc);
     var querystring = require("querystring");
     // let post_data = {"img" : imageSrc}
-    axios.post('http://localhost:5000/getScreenShot', querystring.stringify({ img: imageSrc }))
+    axios.post('http://192.168.0.101:5000/getScreenShot', querystring.stringify({ img: imageSrc }))
           .then(response => {
               if (response.status === 200 && response != null) {
                 let face_inner =  "data:image/jpeg;base64," + response.data.STATUS;
@@ -70,7 +70,7 @@ class FaceAuth extends React.Component {
   }
   handleSubmit = (event) => {
     var querystring = require("querystring");
-    axios.post('http://localhost:5000/saveuser', querystring.stringify({ usr: this.state.face , name : this.state.name_placeholder }))
+    axios.post('http://192.168.0.101:5000/saveuser', querystring.stringify({ usr: this.state.face , name : this.state.name_placeholder }))
           .then(response => {
               if (response.status === 200 && response != null) {
                 let status = response.data.STATUS;
@@ -92,7 +92,7 @@ class FaceAuth extends React.Component {
 
   searchUser = () => {
     var querystring = require("querystring");
-    axios.post('http://localhost:5000/checkuser', querystring.stringify({ usr: this.state.face}))
+    axios.post('http://192.168.0.101:5000/checkuser', querystring.stringify({ usr: this.state.face}))
           .then(response => {
               if (response.status === 200 && response != null) {
                 let matched_user = response.data.STATUS;
