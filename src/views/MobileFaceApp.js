@@ -53,6 +53,74 @@ class DefaultModal extends React.Component {
     }
 }
 
+class CameraModal extends React.Component {
+	setRef = webcam => {
+		this.webcam = webcam;
+	  };
+
+	  capture = () => {
+		console.log("ENTERED")
+		const dataUri = this.webcam.getScreenshot();
+		var querystring = require("querystring");
+		axios.post('http://localhost:5000/selfie', querystring.stringify({ selfie: dataUri}))
+			.then(response => {
+				if (response.status === 200 && response != null) {
+					if(response.data.status == 200){
+						alert("Face Detected")
+						this.setState({selfie : dataUri});
+					}
+					else{
+						alert("No Face Detected.")
+						this.setState({selfie : "No Face Found"});
+					}
+				}
+			})
+	}
+
+    render() {
+		const videoConstraints = {
+			width: 20,
+			height: 20,
+			facingMode: "user"
+		  };
+        return (
+            <Modal
+				{...this.props}
+				
+                size="lg"
+                aria-labelledby="contained-modal-title-vcenter"
+                centered
+            >
+                <Modal.Body>
+                    <Form>
+                        <Row>
+							<div>
+							<Webcam
+							audio={false}
+							height={100}
+							ref={this.setRef}
+							screenshotFormat="image/jpeg"
+							width={100}
+							mirrored={true}
+							videoConstraints={videoConstraints}
+							/>
+							</div>
+						</Row>
+
+						<Button variant="primary w-80" onClick={this.capture}>
+                            Capture
+                        </Button>
+
+                        <Button variant="secondary float-right w-80" onClick={this.props.onHide}>
+                            Go Back
+                        </Button>
+                    </Form>
+                </Modal.Body>
+            </Modal>
+        );
+    }
+}
+
 class MobileFaceApp extends React.Component {
 	setRef = webcam => {
 		this.webcam = webcam;
@@ -83,9 +151,14 @@ class MobileFaceApp extends React.Component {
 			nicBToselfie : "",
 			},
 			modalShow : false,
+			cameraShow : false,
 		}
 		// this.handleSubmit = this.handleSubmit.bind(this);
 		}
+
+	cameraClose = () => {
+		this.setState({ cameraShow: false });
+	}
 
 	modalClose = () => {
 		this.setState({ modalShow: false });
@@ -156,23 +229,11 @@ class MobileFaceApp extends React.Component {
 				})
 	}; 
 
-	capture = () => {
+	
+
+	showCamera = () => {
 		this.setState({btn4 : false})
-		const dataUri = this.webcam.getScreenshot();
-		var querystring = require("querystring");
-		axios.post('http://localhost:5000/selfie', querystring.stringify({ selfie: dataUri}))
-			.then(response => {
-				if (response.status === 200 && response != null) {
-					if(response.data.status == 200){
-						alert("Face Detected")
-						this.setState({selfie : dataUri});
-					}
-					else{
-						alert("No Face Detected.")
-						this.setState({selfie : "No Face Found"});
-					}
-				}
-			})
+		this.setState({cameraShow : true})
 	}
 
 	evaluate = () => {
@@ -209,11 +270,11 @@ class MobileFaceApp extends React.Component {
 
 
   render(){
-	const videoConstraints = {
-		width: 20,
-		height: 20,
-		facingMode: "user"
-	  };
+	// const videoConstraints = {
+	// 	width: 20,
+	// 	height: 20,
+	// 	facingMode: "user"
+	//   };
   return (
 	<Container fluid className="main-content-container px-4">
 		<Row noGutters className="page-header py-4">
@@ -256,7 +317,7 @@ class MobileFaceApp extends React.Component {
 			<Col lg="4" md="3" sm="3" className="mb-4">
 				{/* <Camera onTakePhoto = { (dataUri) => { this.handleTakePhoto(dataUri); } } /> */}
 
-				<Webcam
+				{/* <Webcam
 				audio={false}
 				height={100}
 				ref={this.setRef}
@@ -264,17 +325,17 @@ class MobileFaceApp extends React.Component {
 				width={100}
 				mirrored={true}
 				videoConstraints={videoConstraints}
-				/>
+				/> */}
 				</Col>
 				</Row>	
 				<Row>
-				<Col lg="4" md="3" sm="3" className="mb-4">
+				{/* <Col lg="4" md="3" sm="3" className="mb-4">
 				<img src={this.state.selfie} width="100" alt="No Face Extracted." />
-				</Col>
+				</Col> */}
 				</Row>
 				<Row>
 				<Col lg="4" md="3" sm="3" className="mb-4">
-				<Button onClick={this.capture} disabled={this.state.btn3} variant="primary rounded btn-block">Capture Selfie</Button>
+				<Button onClick={this.showCamera} disabled={this.state.btn3} variant="primary rounded btn-block">Capture Selfie</Button>
 				</Col>
 				</Row>
 
@@ -287,6 +348,10 @@ class MobileFaceApp extends React.Component {
                     show={this.state.modalShow}
 					onHide={this.modalClose}
 					data={this.state.eval_results}
+                />
+				<CameraModal
+                    show={this.state.cameraShow}
+					onHide={this.cameraClose}
                 />
 	</Container>
 	//   <>
