@@ -16,8 +16,8 @@ import {
 import PageTitle from "./../components/common/PageTitle";
 import { ImagePicker } from 'react-file-picker'
 import Webcam from "react-webcam";
-
-
+import Badge from 'react-bootstrap/Badge'
+import LoadingOverlay from 'react-loading-overlay';
 
 
 class DefaultModal extends React.Component {
@@ -57,21 +57,29 @@ class CameraModal extends React.Component {
 	setRef = webcam => {
 		this.webcam = webcam;
 	  };
+	  
+	  constructor(props){
+		super(props);
+		this.state={
+			btn3Show: false,
+			btn3Dis : true,
+			btn3Scs : false,
+		}
+	}
 
 	  capture = () => {
-		console.log("ENTERED")
 		const dataUri = this.webcam.getScreenshot();
 		var querystring = require("querystring");
 		axios.post('http://localhost:5000/selfie', querystring.stringify({ selfie: dataUri}))
 			.then(response => {
 				if (response.status === 200 && response != null) {
 					if(response.data.status == 200){
-						alert("Face Detected")
-						this.setState({selfie : dataUri});
+						// alert("Face Detected")
+						this.setState({selfie : dataUri, btn3Show : true, btn3Scs : true});
 					}
 					else{
-						alert("No Face Detected.")
-						this.setState({selfie : "No Face Found"});
+						// alert("No Face Detected.")
+						this.setState({selfie : dataUri, btn3Show : true, btn3Scs : false});
 					}
 				}
 			})
@@ -107,12 +115,13 @@ class CameraModal extends React.Component {
 							</div>
 						</Row>
 
-						<Button variant="primary w-80" onClick={this.capture}>
+						<Button variant="primary w-80" onClick={this.capture} >
                             Capture
                         </Button>
-
-                        <Button variant="secondary float-right w-80" onClick={this.props.onHide}>
-                            Go Back
+						{this.state.btn3Show ? (this.state.btn3Scs ? (<Badge pill variant="success">Face Detected</Badge>) : (<Badge pill variant="warning">No Face</Badge>)) : <></>}
+						
+                        <Button variant="secondary float-right w-80" onClick={this.props.onHide} >
+                            Use
                         </Button>
                     </Form>
                 </Modal.Body>
@@ -139,9 +148,15 @@ class MobileFaceApp extends React.Component {
 			selectedVideo: null,
 			selfie : '',
 			btn0 : false,
+			btn0Scs : false,
+			btn0Show : false,
 			btn1 : true,
+			btn1Scs : false,
+			btn1Show : false,
 			btn2 : true,
-			btn3 : true,
+			btn2Scs : false,
+			btn2Show : false,
+			btn3 : false,
 			btn4 : true,
 			test_state : "owais",
 			eval_results: {
@@ -152,6 +167,7 @@ class MobileFaceApp extends React.Component {
 			},
 			modalShow : false,
 			cameraShow : false,
+			loader : false,
 		}
 		// this.handleSubmit = this.handleSubmit.bind(this);
 		}
@@ -166,16 +182,19 @@ class MobileFaceApp extends React.Component {
 	}
 
 	nicFrontUpload = (baseFile) => {
-		this.setState({nicF : baseFile, btn1 : false})
+		this.setState({nicF : baseFile, loader : true})
 		var querystring = require("querystring");
 		axios.post('http://localhost:5000/nicF', querystring.stringify({ nicF: this.state.nicF}))
 			.then(response => {
+				this.setState({loader : false})
 				if (response.status === 200 && response != null) {
 					if(response.data.status == 200){
-						alert("Face Detected")
+						this.setState({btn0Scs : true, btn0Show : true, btn1 : false})
+						// alert("Face Detected")
 					}
 					else{
-						alert("No Face Detected.")
+						this.setState({btn0Scs : false, btn0Show : true, btn1 : false})
+						// alert("No Face Detected.")
 					}
 				}
 				})
@@ -184,16 +203,19 @@ class MobileFaceApp extends React.Component {
 
 
 	nicBackUpload = (baseFile) => {
-		this.setState({nicB : baseFile, btn2 : false})
+		this.setState({nicB : baseFile, loader : true})
 		var querystring = require("querystring");
 		axios.post('http://localhost:5000/nicB', querystring.stringify({ nicF: this.state.nicB}))
 			.then(response => {
+				this.setState({loader : false})
 				if (response.status === 200 && response != null) {
 					if(response.data.status == 200){
-						alert("Face Detected")
+						// alert("Face Detected")
+						this.setState({btn1Scs : true, btn1Show : true, btn2 : false})
 					}
 					else{
-						alert("No Face Detected.")
+						// alert("No Face Detected.")
+						this.setState({btn1Scs : false, btn1Show : true, btn2 : false})
 					}
 				}
 				})
@@ -209,6 +231,7 @@ class MobileFaceApp extends React.Component {
 	   
 	  // On file upload (click the upload button) 
 	onVideoUpload = () => { 
+		this.setState({loader : true})
 		this.setState({btn3 : false})
 		const formData = new FormData(); 
 		
@@ -222,11 +245,17 @@ class MobileFaceApp extends React.Component {
 		
 		axios.post('http://localhost:5000/video', formData)
 			.then(response => {
+				this.setState({loader : false})
 				if (response.status === 200 && response != null) {
 					console.log("Video Uploaded")
+					this.setState({btn2Scs : true, btn2Show : true})
+				}
+				else{
+					this.setState({btn2Scs : false, btn2Show : true})
 				}
 				
 				})
+				.catch(this.setState({btn2Scs : false, btn2Show : true, loader : false}))
 	}; 
 
 	
@@ -270,18 +299,18 @@ class MobileFaceApp extends React.Component {
 
 
   render(){
-	// const videoConstraints = {
-	// 	width: 20,
-	// 	height: 20,
-	// 	facingMode: "user"
-	//   };
   return (
 	<Container fluid className="main-content-container px-4">
 		<Row noGutters className="page-header py-4">
 			<PageTitle title="Know Your Customer" subtitle="AI Powered - KYC" className="text-sm-left mb-3" />
 		</Row>
+		<LoadingOverlay
+			active={this.state.loader}
+			spinner
+			text='Loading...'
+			>
 		<Row>
-			<Col lg="2" md="3" sm="3" className="mb-4">
+			<Col lg="4" md="3" sm="3" className="mb-4">
 			<ImagePicker
 			extensions={this.state.li}
 			dims={this.state.minWidth, this.state.maxWidth, this.state.minHeight, this.state.maxHeight}
@@ -292,8 +321,11 @@ class MobileFaceApp extends React.Component {
 			Upload Front Side of NIC
 			</Button>
 			</ImagePicker>
+			{this.state.btn0Show ? (this.state.btn0Scs ? (<Badge pill variant="success">Face Detected</Badge>) : (<Badge pill variant="warning">No Face</Badge>)) : <></>}
 
 			</Col>
+			</Row>
+			<Row>
 			<Col lg="4" md="3" sm="3" className="mb-4">
 			<ImagePicker
 			extensions={this.state.li}
@@ -305,34 +337,26 @@ class MobileFaceApp extends React.Component {
 			Upload Back Side of NIC
 			</Button>
 			</ImagePicker>
+			{this.state.btn1Show ? (this.state.btn1Scs ? (<Badge pill variant="success">Face Detected</Badge>) : (<Badge pill variant="warning">No Face</Badge>)) : <></>}
 			</Col>
+			</Row>
+			<Row>
+			</Row>
+			<Row>
 			<Col lg="4" md="3" sm="3" className="mb-4">
                 <input type="file" onChange={this.onFileChange} /> 
                 <Button onClick={this.onVideoUpload} disabled={this.state.btn2} variant="primary rounded btn-block"> 
                   Upload Video
                 </Button> 
+				{this.state.btn2Show ? (this.state.btn2Scs ? (<Badge pill variant="success">Uploaded</Badge>) : (<Badge pill variant="warning">Upload Error</Badge>)) : <></>}
             </Col>
 			</Row>
-			<Row>
-			<Col lg="4" md="3" sm="3" className="mb-4">
-				{/* <Camera onTakePhoto = { (dataUri) => { this.handleTakePhoto(dataUri); } } /> */}
-
-				{/* <Webcam
-				audio={false}
-				height={100}
-				ref={this.setRef}
-				screenshotFormat="image/jpeg"
-				width={100}
-				mirrored={true}
-				videoConstraints={videoConstraints}
-				/> */}
-				</Col>
-				</Row>	
-				<Row>
-				{/* <Col lg="4" md="3" sm="3" className="mb-4">
+				
+				{/* <Row>
+				<Col lg="4" md="3" sm="3" className="mb-4">
 				<img src={this.state.selfie} width="100" alt="No Face Extracted." />
-				</Col> */}
-				</Row>
+				</Col>
+				</Row> */}
 				<Row>
 				<Col lg="4" md="3" sm="3" className="mb-4">
 				<Button onClick={this.showCamera} disabled={this.state.btn3} variant="primary rounded btn-block">Capture Selfie</Button>
@@ -353,6 +377,7 @@ class MobileFaceApp extends React.Component {
                     show={this.state.cameraShow}
 					onHide={this.cameraClose}
                 />
+				</LoadingOverlay>
 	</Container>
 	//   <>
     // <Camera onTakePhoto = { (dataUri) => { this.handleTakePhoto(dataUri); } } />
